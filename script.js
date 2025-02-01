@@ -2,6 +2,13 @@ document.addEventListener("DOMContentLoaded", function () {
   fetch("/.netlify/functions/fetchData")
     .then((response) => response.json())
     .then((data) => {
+      console.log("Fetched data:", data); // Debugging
+      if (!Array.isArray(data)) {
+        console.error("Invalid data format:", data);
+        document.getElementById("data-table").innerHTML =
+          "<tr><td colspan='2'>Error loading data</td></tr>";
+        return;
+      }
       let table = document.getElementById("data-table");
       if (data.length === 0) {
         table.innerHTML = "<tr><td colspan='2'>No subscribers found</td></tr>";
@@ -13,24 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       }
     })
-    .catch((error) => console.error("Error fetching data:", error));
-});
-
-// Insert subscriber
-document.getElementById("insertForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  let email = document.getElementById("email").value;
-
-  fetch("/.netlify/functions/insertData", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      alert(data.message || "Subscription successful!");
-      window.location.reload(); // Refresh to show new subscriber
-    })
-    .catch((error) => console.error("Error inserting subscriber:", error));
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+      document.getElementById("data-table").innerHTML =
+        "<tr><td colspan='2'>Failed to load data</td></tr>";
+    });
 });
