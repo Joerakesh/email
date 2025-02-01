@@ -3,11 +3,34 @@ document.addEventListener("DOMContentLoaded", function () {
     .then((response) => response.json())
     .then((data) => {
       let table = document.getElementById("data-table");
-      data.forEach((row) => {
-        let tr = document.createElement("tr");
-        tr.innerHTML = `<td>${row.id}</td><td>${row.email}</td>`;
-        table.appendChild(tr);
-      });
+      if (data.length === 0) {
+        table.innerHTML = "<tr><td colspan='3'>No data found</td></tr>";
+      } else {
+        data.forEach((row) => {
+          let tr = document.createElement("tr");
+          tr.innerHTML = `<td>${row.id}</td><td>${row.email}</td>`;
+          table.appendChild(tr);
+        });
+      }
     })
     .catch((error) => console.error("Error fetching data:", error));
+});
+
+// Insert data
+document.getElementById("insertForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  let email = document.getElementById("email").value;
+
+  fetch("/.netlify/functions/insertData", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      alert(data.message || "Inserted successfully!");
+      window.location.reload(); // Refresh to show new data
+    })
+    .catch((error) => console.error("Error inserting data:", error));
 });

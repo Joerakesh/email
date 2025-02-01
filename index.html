@@ -11,13 +11,21 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Email</th>
+          <th>Name</th>
+          <th>Price</th>
         </tr>
       </thead>
       <tbody id="data-table">
         <!-- Data will be inserted here -->
       </tbody>
     </table>
+
+    <h2>Add New Product</h2>
+    <form id="insertForm">
+      <input type="text" id="name" placeholder="Product Name" required />
+      <input type="number" id="price" placeholder="Price" required />
+      <button type="submit">Insert</button>
+    </form>
 
     <script src="script.js"></script>
   </body>
