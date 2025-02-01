@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1); // Enable error reporting for debugging
 
-$dsn = 'pgsql:host=magazinedata-joerakesh.turso.io;port=5432;dbname=magazinedata;user=your_username;password=your_password';
+$dsn = 'libsql://magazinedata-joerakesh.turso.io';
 
 try {
     $pdo = new PDO($dsn);
