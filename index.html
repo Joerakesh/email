@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Subscribe to Our Magazine</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .popup-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      .popup-box {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        width: 350px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      }
+      .popup-box h2 {
+        margin-bottom: 10px;
+      }
+      .popup-box input {
+        width: 90%;
+        padding: 8px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+      }
+      .popup-box button {
+        background: #ff6b6b;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      .existing-message {
+        color: green;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="popup-container" id="emailPopup">
+      <div class="popup-box">
+        <h2>Get Exclusive Updates!</h2>
+        <p>Subscribe to our magazine for the latest insights.</p>
+        <input
+          type="email"
+          id="userEmail"
+          placeholder="Enter your email"
+          required
+        />
+        <button onclick="submitEmail()">Subscribe</button>
+        <p id="existingMessage" class="existing-message"></p>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        if (!localStorage.getItem("subscribed")) {
+          document.getElementById("emailPopup").style.display = "flex";
+        }
+      });
+
+      function submitEmail() {
+        let email = document.getElementById("userEmail").value;
+        if (email) {
+          let xhr = new XMLHttpRequest();
+          xhr.open("POST", "save_email.php", true); // Use your hosted PHP URL here
+          xhr.setRequestHeader(
+            "Content-Type",
+            "application/x-www-form-urlencoded"
+          );
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+              let response = JSON.parse(xhr.responseText);
+              if (response.exists) {
+                alert("You are already subscribed!");
+              } else {
+                alert("Thank you for subscribing!");
+              }
+              document.getElementById("emailPopup").style.display = "none";
+            }
+          };
+          xhr.send("email=" + encodeURIComponent(email));
+        } else {
+          alert("Please enter a valid email.");
+        }
+      }
+
+      function storeEmail(email) {
+        // Store email in localStorage and hide popup
+        localStorage.setItem("subscribed", "true");
+        localStorage.setItem("userEmail", email);
+
+        // Send email to save it in the database
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "save_email.php", true);
+        xhr.setRequestHeader(
+          "Content-Type",
+          "application/x-www-form-urlencoded"
+        );
+
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            alert("Thank you for subscribing!");
+            document.getElementById("emailPopup").style.display = "none";
+          }
+        };
+
+        xhr.send("email=" + encodeURIComponent(email));
+      }
+
+      // Email validation function using regex
+      function validateEmail(email) {
+        let regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        return regex.test(email);
+      }
+    </script>
+  </body>
+</html>
