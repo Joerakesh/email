@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
       let table = document.getElementById("data-table");
       data.forEach((row) => {
         let tr = document.createElement("tr");
-        tr.innerHTML = `<td>${row.id}</td><td>${row.id}</td><td>${row.email}</td>`;
+        tr.innerHTML = `<td>${row.id}</td><td>${row.email}</td>`;
         table.appendChild(tr);
       });
     })
