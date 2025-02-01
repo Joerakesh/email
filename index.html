@@ -3,27 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Subscribers List</title>
+    <title>Magazine Subscription</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h2>Subscribers</h2>
-    <table border="1">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Email</th>
-        </tr>
-      </thead>
-      <tbody id="data-table">
-        <!-- Subscribers will be inserted here -->
-      </tbody>
-    </table>
+    <div class="content">
+      <h1>Welcome to Our Magazine</h1>
+      <p>Stay updated with the latest news and articles!</p>
+    </div>
 
-    <h2>Add Subscriber</h2>
-    <form id="insertForm">
-      <input type="email" id="email" placeholder="Enter Email" required />
-      <button type="submit">Subscribe</button>
-    </form>
+    <!-- Popup Modal -->
+    <div id="email-popup" class="popup">
+      <div class="popup-content">
+        <h2>Subscribe to Our Magazine</h2>
+        <form id="email-form">
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            required
+          />
+          <button type="submit">Subscribe</button>
+          <button type="button" onclick="closePopup()">Close</button>
+        </form>
+      </div>
+    </div>
 
     <script src="script.js"></script>
   </body>

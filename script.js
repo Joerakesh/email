@@ -1,28 +1,36 @@
 document.addEventListener("DOMContentLoaded", function () {
-  fetch("/.netlify/functions/fetchData")
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Fetched data:", data); // Debugging
-      if (!Array.isArray(data)) {
-        console.error("Invalid data format:", data);
-        document.getElementById("data-table").innerHTML =
-          "<tr><td colspan='2'>Error loading data</td></tr>";
-        return;
+  // Show popup after 2 seconds
+  setTimeout(() => {
+    document.getElementById("email-popup").style.display = "flex";
+  }, 2000);
+
+  // Handle form submission
+  document
+    .getElementById("email-form")
+    .addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+
+      if (email) {
+        // Send email to backend
+        fetch("/.netlify/functions/storeEmail", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Subscription successful", data);
+            closePopup();
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("Something went wrong!");
+          });
       }
-      let table = document.getElementById("data-table");
-      if (data.length === 0) {
-        table.innerHTML = "<tr><td colspan='2'>No subscribers found</td></tr>";
-      } else {
-        data.forEach((row) => {
-          let tr = document.createElement("tr");
-          tr.innerHTML = `<td>${row.id}</td><td>${row.email}</td>`;
-          table.appendChild(tr);
-        });
-      }
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-      document.getElementById("data-table").innerHTML =
-        "<tr><td colspan='2'>Failed to load data</td></tr>";
     });
 });
+
+function closePopup() {
+  document.getElementById("email-popup").style.display = "none";
+}
