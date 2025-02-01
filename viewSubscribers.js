@@ -16,10 +16,6 @@ async function fetchSubscribers() {
       data.forEach((subscriber) => {
         const row = document.createElement("tr");
 
-        const idCell = document.createElement("td");
-        idCell.textContent = subscriber.id;
-        row.appendChild(idCell);
-
         const emailCell = document.createElement("td");
         emailCell.textContent = subscriber.email;
         row.appendChild(emailCell);
