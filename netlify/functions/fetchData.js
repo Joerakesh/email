@@ -7,14 +7,14 @@ export async function handler(event, context) {
   });
 
   try {
-    const result = await db.execute("SELECT * FROM subscribers"); // Ensure this table exists
-    console.log("Fetched data:", result.rows); // Debugging
+    const result = await db.execute("SELECT * FROM subscribers");
+    console.log("Fetched subscribers:", result.rows); // Debugging
     return {
       statusCode: 200,
       body: JSON.stringify(result.rows),
     };
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("Error fetching subscribers:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message }),

@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .then((data) => {
       let table = document.getElementById("data-table");
       if (data.length === 0) {
-        table.innerHTML = "<tr><td colspan='3'>No data found</td></tr>";
+        table.innerHTML = "<tr><td colspan='2'>No subscribers found</td></tr>";
       } else {
         data.forEach((row) => {
           let tr = document.createElement("tr");
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch((error) => console.error("Error fetching data:", error));
 });
 
-// Insert data
+// Insert subscriber
 document.getElementById("insertForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -29,8 +29,8 @@ document.getElementById("insertForm").addEventListener("submit", function (e) {
   })
     .then((response) => response.json())
     .then((data) => {
-      alert(data.message || "Inserted successfully!");
-      window.location.reload(); // Refresh to show new data
+      alert(data.message || "Subscription successful!");
+      window.location.reload(); // Refresh to show new subscriber
     })
-    .catch((error) => console.error("Error inserting data:", error));
+    .catch((error) => console.error("Error inserting subscriber:", error));
 });

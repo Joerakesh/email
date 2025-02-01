@@ -5,7 +5,7 @@ export async function handler(event, context) {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
 
-  const { name, price } = JSON.parse(event.body);
+  const { email } = JSON.parse(event.body);
 
   if (!email) {
     return { statusCode: 400, body: "Missing email" };
@@ -20,7 +20,7 @@ export async function handler(event, context) {
     await db.execute("INSERT INTO subscribers (email) VALUES (?)", [email]);
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "Data inserted successfully!" }),
+      body: JSON.stringify({ message: "Subscriber added successfully!" }),
     };
   } catch (error) {
     console.error("Insert Error:", error);
